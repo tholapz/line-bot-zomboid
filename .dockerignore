@@ -1,0 +1,46 @@
+# Byte-compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+
+# Environment variables file
+.env
+
+# Logs and temporary files
+*.log
+*.bak
+*.swp
+*.tmp
+*.pid
+
+# Git and version control
+.git/
+.gitignore
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Test files
+tests/
+*.test.*
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Docker-specific files
+docker-compose.override.yml
+*.~*
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Node and frontend dependencies (if applicable)
+node_modules/
+dist/
