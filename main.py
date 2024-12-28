@@ -82,7 +82,6 @@ def handle_message(event):
         line_bot_api = MessagingApi(api_client)
         if not isinstance(event.message, TextMessageContent):
             return
-        message_text = event.message.text
 
         if "zomboid re" in event.message.text:
             container_name = "zomboid-server"
@@ -90,11 +89,10 @@ def handle_message(event):
             message_text = (
                 f"I’ve restarted the `{container_name}` container as requested! 🚀"
             )
-
-        # Reply to the user
-        line_bot_api.reply_message_with_http_info(
-            ReplyMessageRequest(
-                reply_token=event.reply_token,
-                messages=[TextMessage(text=message_text)],
+            # Reply to the user
+            line_bot_api.reply_message_with_http_info(
+                ReplyMessageRequest(
+                    reply_token=event.reply_token,
+                    messages=[TextMessage(text=message_text)],
+                )
             )
-        )
