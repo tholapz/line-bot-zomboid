@@ -10,7 +10,7 @@ from linebot.v3.messaging import (
     ReplyMessageRequest,
     TextMessage,
 )
-from linebot.v3.webhooks import JoinEvent, MessageEvent
+from linebot.v3.webhooks import JoinEvent, MessageEvent, TextMessageContent
 
 # Initialize Docker client
 docker_client = docker.DockerClient(base_url="unix://var/run/docker.sock")
@@ -26,8 +26,6 @@ def restart_container(container_name: str):
     except docker.errors.APIError as e:
         print(f"Failed to restart container '{container_name}': {e}")
 
-
-BOT_NAME = "SaiJAI"
 # LINE credentials
 CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET", "your_line_channel_secret")
 CHANNEL_ACCESS_TOKEN = os.getenv(
@@ -78,14 +76,21 @@ def handle_join(event):
 
 
 # Handler for when the bot is mentioned
-@handler.add(MessageEvent, message=TextMessage)
+@handler.add(MessageEvent)
 def handle_text_message(event):
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
         message_text = event.message.text
 
+        # Reply to the user
+        line_bot_api.reply_message_with_http_info(
+            ReplyMessageRequest(
+                reply_token=event.reply_token,
+                messages=[TextMessage(text=message_text)],
+            )
+        )
         # Check if the bot is mentioned
-        if BOT_NAME in message_text:
+        if "zomboid re" in message_text:
             print(f"Bot mentioned in group {event.source.group_id}: {message_text}")
 
             # Restart the zomboid-server container

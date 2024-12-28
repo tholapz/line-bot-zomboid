@@ -1,5 +1,4 @@
-fastapi
-uvicorn
+fastapi[standard]
 line-bot-sdk
 docker
 python-dotenv
