@@ -77,10 +77,19 @@ def handle_join(event):
 
 # Handler for when the bot is mentioned
 @handler.add(MessageEvent)
-def handle_text_message(event):
+def handle_message(event):
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
+        if not isinstance(event.message, TextMessageContent):
+            return
         message_text = event.message.text
+
+        if "zomboid re" in event.message.text:
+            container_name = "zomboid-server"
+            restart_container(container_name)
+            message_text = (
+                f"I’ve restarted the `{container_name}` container as requested! 🚀"
+            )
 
         # Reply to the user
         line_bot_api.reply_message_with_http_info(
@@ -89,22 +98,3 @@ def handle_text_message(event):
                 messages=[TextMessage(text=message_text)],
             )
         )
-        # Check if the bot is mentioned
-        if "zomboid re" in message_text:
-            print(f"Bot mentioned in group {event.source.group_id}: {message_text}")
-
-            # Restart the zomboid-server container
-            container_name = "zomboid-server"
-            restart_container(container_name)
-
-            # Reply to the user
-            line_bot_api.reply_message_with_http_info(
-                ReplyMessageRequest(
-                    reply_token=event.reply_token,
-                    messages=[
-                        TextMessage(
-                            text=f"I’ve restarted the `{container_name}` container as requested! 🚀"
-                        )
-                    ],
-                )
-            )
