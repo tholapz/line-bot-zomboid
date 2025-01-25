@@ -15,7 +15,6 @@ from linebot.v3.webhooks import JoinEvent, MessageEvent, TextMessageContent
 # Initialize Docker client
 docker_client = docker.DockerClient(base_url="unix://var/run/docker.sock")
 
-
 def restart_container(container_name: str):
     try:
         container = docker_client.containers.get(container_name)
@@ -121,6 +120,7 @@ def handle_message(event):
             message_text = (
                 f"I’ve started the `{container_name}` container as requested! 🚀"
             )
+
             # Reply to the user
             line_bot_api.reply_message_with_http_info(
                 ReplyMessageRequest(
