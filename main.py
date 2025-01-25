@@ -26,6 +26,26 @@ def restart_container(container_name: str):
     except docker.errors.APIError as e:
         print(f"Failed to restart container '{container_name}': {e}")
 
+def stop_container(container_name: str):
+    try:
+        container = docker_client.containers.get(container_name)
+        container.stop()
+        print(f"Container '{container_name}' stopped successfully.")
+    except docker.errors.NotFound:
+        print(f"Container '{container_name}' not found.")
+    except docker.errors.APIError as e:
+        print(f"Failed to stop container '{container_name}': {e}")
+
+def start_container(container_name: str):
+    try:
+        container = docker_client.containers.get(container_name)
+        container.start()
+        print(f"Container '{container_name}' started successfully.")
+    except docker.errors.NotFound:
+        print(f"Container '{container_name}' not found.")
+    except docker.errors.APIError as e:
+        print(f"Failed to start container '{container_name}': {e}")
+
 # LINE credentials
 CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET", "your_line_channel_secret")
 CHANNEL_ACCESS_TOKEN = os.getenv(
@@ -88,6 +108,18 @@ def handle_message(event):
             restart_container(container_name)
             message_text = (
                 f"I’ve restarted the `{container_name}` container as requested! 🚀"
+            )
+        if "zomboid stop" in event.message.text:
+            container_name = "zomboid-server"
+            stop_container(container_name)
+            message_text = (
+                f"I’ve stopped the `{container_name}` container as requested! 🚀"
+            )
+        if "zomboid start" in event.message.text:
+            container_name = "zomboid-server"
+            start_container(container_name)
+            message_text = (
+                f"I’ve started the `{container_name}` container as requested! 🚀"
             )
             # Reply to the user
             line_bot_api.reply_message_with_http_info(
