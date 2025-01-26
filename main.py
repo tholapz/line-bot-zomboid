@@ -99,32 +99,36 @@ def handle_join(event):
 def handle_message(event):
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
+        message_text = ''
         if not isinstance(event.message, TextMessageContent):
             return
+        if not "zomboid" in event.message.text:
+            return
 
-        if "zomboid re" in event.message.text:
-            container_name = "zomboid-server"
+        container_name = "zomboid-server"
+
+        if "re" in event.message.text:
             restart_container(container_name)
             message_text = (
                 f"I’ve restarted the `{container_name}` container as requested! 🚀"
             )
-        if "zomboid stop" in event.message.text:
-            container_name = "zomboid-server"
+        else if "stop" in event.message.text:
             stop_container(container_name)
             message_text = (
                 f"I’ve stopped the `{container_name}` container as requested! 🚀"
             )
-        if "zomboid start" in event.message.text:
-            container_name = "zomboid-server"
+        else if "start" in event.message.text:
             start_container(container_name)
             message_text = (
                 f"I’ve started the `{container_name}` container as requested! 🚀"
             )
-            
-            # Reply to the user
-            line_bot_api.reply_message_with_http_info(
-                ReplyMessageRequest(
-                    reply_token=event.reply_token,
-                    messages=[TextMessage(text=message_text)],
-                )
+
+        # Reply to the user
+        if message_text == '':
+            return
+        line_bot_api.reply_message_with_http_info(
+            ReplyMessageRequest(
+                reply_token=event.reply_token,
+                messages=[TextMessage(text=message_text)],
             )
+        )
