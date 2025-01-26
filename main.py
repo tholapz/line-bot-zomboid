@@ -120,11 +120,11 @@ def handle_message(event):
             message_text = (
                 f"I’ve started the `{container_name}` container as requested! 🚀"
             )
-            
-            # Reply to the user
-            line_bot_api.reply_message_with_http_info(
-                ReplyMessageRequest(
-                    reply_token=event.reply_token,
-                    messages=[TextMessage(text=message_text)],
-                )
+
+        # Reply to the user
+        line_bot_api.reply_message_with_http_info(
+            ReplyMessageRequest(
+                reply_token=event.reply_token,
+                messages=[TextMessage(text=message_text)],
             )
+        )
