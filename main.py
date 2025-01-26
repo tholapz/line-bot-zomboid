@@ -108,13 +108,13 @@ def handle_message(event):
             message_text = (
                 f"I’ve restarted the `{container_name}` container as requested! 🚀"
             )
-        if "zomboid stop" in event.message.text:
+        else if "zomboid stop" in event.message.text:
             container_name = "zomboid-server"
             stop_container(container_name)
             message_text = (
                 f"I’ve stopped the `{container_name}` container as requested! 🚀"
             )
-        if "zomboid start" in event.message.text:
+        else if "zomboid start" in event.message.text:
             container_name = "zomboid-server"
             start_container(container_name)
             message_text = (
