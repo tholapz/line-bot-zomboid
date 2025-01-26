@@ -112,12 +112,12 @@ def handle_message(event):
             message_text = (
                 f"I’ve restarted the `{container_name}` container as requested! 🚀"
             )
-        else if "stop" in event.message.text:
+        elif "stop" in event.message.text:
             stop_container(container_name)
             message_text = (
                 f"I’ve stopped the `{container_name}` container as requested! 🚀"
             )
-        else if "start" in event.message.text:
+        elif "start" in event.message.text:
             start_container(container_name)
             message_text = (
                 f"I’ve started the `{container_name}` container as requested! 🚀"
